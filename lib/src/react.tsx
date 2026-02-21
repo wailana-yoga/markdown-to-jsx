@@ -37,10 +37,13 @@ function createRawElement(
   props: any,
   key: any
 ): any {
-  // _owner and _store must be present unconditionally. React's RSC flight
+  // These properties must be present unconditionally. React's RSC flight
   // serializer validates elements during server-side rendering regardless of
   // NODE_ENV, and sets _store.validated during reconciliation. Without these
   // properties, serialization throws "Cannot set properties of undefined".
+  // The debug properties (_debugInfo, _debugStack, _debugTask) must also be
+  // present unconditionally because React dev mode accesses them without
+  // checking for existence first.
   return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: type,
@@ -49,6 +52,9 @@ function createRawElement(
     props: props,
     _owner: null,
     _store: {},
+    _debugInfo: null,
+    _debugStack: new Error(),
+    _debugTask: null,
   }
 }
 
