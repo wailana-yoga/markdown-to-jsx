@@ -37,21 +37,19 @@ function createRawElement(
   props: any,
   key: any
 ): any {
-  var el: any = {
+  // _owner and _store must be present unconditionally. React's RSC flight
+  // serializer validates elements during server-side rendering regardless of
+  // NODE_ENV, and sets _store.validated during reconciliation. Without these
+  // properties, serialization throws "Cannot set properties of undefined".
+  return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: type,
     key: key != null ? '' + key : null,
     ref: null,
     props: props,
     _owner: null,
+    _store: {},
   }
-  if (process.env.NODE_ENV !== 'production') {
-    // React's dev-mode reconciler sets element._store.validated to track
-    // whether elements were created via JSX vs createElement. Without _store,
-    // this throws "Cannot set properties of undefined (setting 'validated')".
-    el._store = {}
-  }
-  return el
 }
 
 /**

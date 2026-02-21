@@ -15,7 +15,7 @@ function manglePropsPlugin(): BunupPlugin {
           var result = transformSync(code, {
             loader: 'js',
             mangleProps: /^_/,
-            reserveProps: /__html/,
+            reserveProps: /__html|_owner|_store/,
             minifyWhitespace: true,
             minifySyntax: true,
           })
